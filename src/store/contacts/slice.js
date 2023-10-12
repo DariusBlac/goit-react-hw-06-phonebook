@@ -5,11 +5,6 @@ export const contactsSlice = createSlice({
   initialState,
   reducers: {
     createContactAction: (state, { payload }) => {
-      const isAlreadyExist = state.contacts.find(
-        el => el.name.toLowerCase() === payload.name.toLowerCase()
-      );
-      if (isAlreadyExist)
-        return alert(`${isAlreadyExist.name} is already in contacts`);
       const newContact = { ...payload, id: nanoid() };
       state.contacts = [...state.contacts, newContact];
     },

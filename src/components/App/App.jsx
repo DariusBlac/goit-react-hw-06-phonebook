@@ -10,20 +10,17 @@ import {
 } from 'store/contacts/slice';
 
 export const App = () => {
-  // const [contacts, setContacts] = useState(
-  //   JSON.parse(localStorage.getItem('contacts')) || []
-  // );
-
-  const { contacts, filter } = useSelector(store => store.contacts);
+  const { contacts } = useSelector(store => store.contacts);
   const dispatch = useDispatch();
 
   const createContact = body => {
+    const isAlreadyExist = contacts.find(
+      el => el.name.toLowerCase() === body.name.toLowerCase()
+    );
+    if (isAlreadyExist)
+      return alert(`${isAlreadyExist.name} is already in contacts`);
     dispatch(createContactAction(body));
   };
-
-  // useEffect(() => {
-  //   localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
 
   const handleDelete = id => {
     dispatch(deleteContactAction(id));
@@ -33,11 +30,6 @@ export const App = () => {
     dispatch(filterContacts(value));
   };
 
-  let filteredContacts = null;
-  filteredContacts = contacts.filter(el =>
-    el.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
   return (
     <div className={css.container}>
       <h1>Phone book</h1>
@@ -46,11 +38,7 @@ export const App = () => {
       <h2>Contacts</h2>
       <Filter filterContact={filterContact} />
 
-      {filteredContacts ? (
-        <ContactList array={filteredContacts} handleDelete={handleDelete} />
-      ) : (
-        <ContactList array={contacts} handleDelete={handleDelete} />
-      )}
+      <ContactList handleDelete={handleDelete} />
     </div>
   );
 };
