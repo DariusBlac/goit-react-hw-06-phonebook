@@ -1,10 +1,15 @@
+import { useDispatch } from 'react-redux';
 import css from './Filter.module.css';
+import { filterContacts } from 'store/contacts/slice';
 
-export const Filter = ({ filterContact }) => {
+export const Filter = () => {
+  const dispatch = useDispatch();
+
   const inputFilterValue = event => {
     const value = event.target.value;
-    filterContact(value);
+    dispatch(filterContacts(value));
   };
+
   return (
     <div>
       <h3 className={css.title}>Filter by Name</h3>

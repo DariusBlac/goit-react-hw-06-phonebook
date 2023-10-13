@@ -1,9 +1,15 @@
 import { ContactItem } from 'components/ContactItem/ContactItem';
 import css from './ContactList.module.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContactAction } from 'store/contacts/slice';
 
-export const ContactList = ({ handleDelete }) => {
+export const ContactList = () => {
   const { contacts, filter } = useSelector(store => store.contacts);
+  const dispatch = useDispatch();
+
+  const handleDelete = id => {
+    dispatch(deleteContactAction(id));
+  };
 
   let filteredContacts = null;
   filteredContacts = contacts.filter(el =>

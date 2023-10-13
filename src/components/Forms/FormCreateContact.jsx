@@ -1,9 +1,22 @@
 import { useState } from 'react';
 import css from './Form.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { createContactAction } from 'store/contacts/slice';
 
-export const FormCreateContact = ({ createContact }) => {
+export const FormCreateContact = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const { contacts } = useSelector(store => store.contacts);
+  const dispatch = useDispatch();
+
+  const createContact = body => {
+    const isAlreadyExist = contacts.find(
+      el => el.name.toLowerCase() === body.name.toLowerCase()
+    );
+    if (isAlreadyExist)
+      return alert(`${isAlreadyExist.name} is already in contacts`);
+    dispatch(createContactAction(body));
+  };
 
   const handleChange = ({ target: { value, name } }) => {
     if (name === 'name') setName(value);
